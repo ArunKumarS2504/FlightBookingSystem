@@ -20,13 +20,15 @@ router.get('/search', async (req, res) => {
 
 // Book Flight
 router.post('/book', async (req, res) => {
-    const { flightId } = req.body;
-    const token = req.headers['authorization'];
+    const { flightId, userEmail } = req.body;
 
     try {
-        const decoded = jwt.verify(token, 'secret');
         const flight = await Flight.findById(flightId);
-        const booking = new Booking({ userId: decoded.id, flightId: flight._id });
+        if (!flight) {
+            console.error('Flight not found:', flightId);
+            return res.status(404).send('Flight not found');
+        }
+        const booking = new Booking({ flightId: flight._id, userEmail });
 
         await booking.save();
 
@@ -42,14 +44,18 @@ router.post('/book', async (req, res) => {
 
         // Send Email
         const transporter = nodemailer.createTransport({ service: 'Gmail', auth: { user: 'your-email@gmail.com', pass: 'your-password' } });
-        const mailOptions = { from: 'your-email@gmail.com', to: 'user-email@example.com', subject: 'Booking Confirmation', text: 'Your booking is confirmed.', attachments: [{ filename: 'booking.pdf', content: pdfBuffer }] };
+        const mailOptions = { from: 'your-email@gmail.com', to: userEmail, subject: 'Booking Confirmation', text: 'Your booking is confirmed.', attachments: [{ filename: 'booking.pdf', content: pdfBuffer }] };
 
         transporter.sendMail(mailOptions, (error, info) => {
-            if (error) return res.status(400).send('Error sending email');
+            if (error){
+                console.error('Error sending email:', error);
+                return res.status(400).send('Error sending email');
+            } 
             res.json({ message: 'Booking confirmed and email sent' });
         });
 
     } catch (error) {
+        console.error('Error booking flight:', error);
         res.status(400).send('Error booking flight');
     }
 });
