@@ -3,13 +3,14 @@ const mongoose = require('mongoose')
 const nodemailer = require('nodemailer')
 const bodyparser = require('body-parser')
 const pdfDocument = require('pdfkit')
+const flightRoutes = require('./routes/flights')
+const bookingRoutes = require('./routes/booking')
 
 const app = express();
 app.use(bodyparser.json());
 
-const authRoutes = require('./routes/auth');
-app.use('/api/auth', authRoutes);
-
+app.use('/api/flights', flightRoutes)
+app.use('/api/bookings', bookingRoutes);
 
 const PORT = process.env.PORT || 3000;
 
