@@ -1,9 +1,9 @@
 const express = require('express');
-const Flight = require('../models/Flight');
 const Booking = require('../models/Booking');
 const pdfkit = require('pdfkit');
 const nodemailer = require('nodemailer');
-
+const Flight = require('../models/Flight');
+const mongoose = require('mongoose');
 const router = express.Router();
 
 // Search Flights
@@ -21,8 +21,12 @@ router.get('/search', async (req, res) => {
 // Book Flight
 router.post('/book', async (req, res) => {
     const { flightId, userEmail } = req.body;
-
+        console.log(`Received flightID: ${flightId}, userEmail: ${userEmail}`)
     try {
+        if (!mongoose.Types.ObjectId.isValid(flightId)) {
+            console.error('Invalid flightId:', flightId);
+            return res.status(400).send('Invalid flightId');
+        }
         const flight = await Flight.findById(flightId);
         if (!flight) {
             console.error('Flight not found:', flightId);
