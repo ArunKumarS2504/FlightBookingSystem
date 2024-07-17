@@ -1,7 +1,5 @@
 const express = require('express');
 const mongoose = require('mongoose')
-const nodemailer = require('nodemailer')
-const bodyparser = require('body-parser')
 const pdfDocument = require('pdfkit')
 const flightRoutes = require('./routes/flights')
 const bookingRoutes = require('./routes/booking')
