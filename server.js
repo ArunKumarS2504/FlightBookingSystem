@@ -3,8 +3,13 @@ const mongoose = require('mongoose')
 const pdfDocument = require('pdfkit')
 const flightRoutes = require('./routes/flights')
 const bookingRoutes = require('./routes/booking')
+
 const http = require('http');
 const socketIo = require('socket.io');
+
+const server = http.createServer();
+const io = socketIo(server);
+
 const app = express();
 app.use(express.json());
 
