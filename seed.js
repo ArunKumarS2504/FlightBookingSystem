@@ -7,13 +7,13 @@ mongoose.connect('mongodb://localhost:27017/flightbooking', { useNewUrlParser: t
 const seedFlights = async () => {
     const flights = [
         {
-            airline: 'Airline Chennai',
-            flightNumber: 'AB123',
+            airline: 'Airline Menaampakkam Chennai',
+            flightNumber: 'AB123Zy20',
             departure: 'New York',
             arrival: 'London',
             departureTime: new Date('2023-12-31T10:00:00.000Z'),
             arrivalTime: new Date('2023-12-31T20:00:00.000Z'),
-            price: 500
+            price: 5000
         },
         {
             airline: 'Kochi Airline',
@@ -22,12 +22,12 @@ const seedFlights = async () => {
             arrival: 'Tokyo',
             departureTime: new Date('2023-11-15T08:00:00.000Z'),
             arrivalTime: new Date('2023-11-15T18:00:00.000Z'),
-            price: 750
+            price: 7500
         }
     ];
 
     await Flight.insertMany(flights);
-    console.log('Flights added');
+    console.log('Flights Add Sucessfully');
 };
 
 const seedBookings = async () => {
